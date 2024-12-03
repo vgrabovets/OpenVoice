@@ -27,6 +27,7 @@ dependencies = [
     "pydantic==2.10.2",
     "termcolor==2.5.0",
     "path-py==12.5.0",
+    "python-dotenv==1.0.1",
 ]
 package = true
 [tool.uv]
