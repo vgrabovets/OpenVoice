@@ -1,6 +1,6 @@
 import tempfile
 from collections import defaultdict
-from typing import Literal
+from typing import Literal, Optional
 
 import torch
 from melo.api import TTS
@@ -26,6 +26,7 @@ class GenerateRequest(BaseModel):
     save_path: str
     language: Literal['en', 'ja']
     text: str
+    pronunciation_path: Optional[str] = None
 
 
 def generate_audio(requests: list[GenerateRequest]) -> None:
@@ -61,6 +62,7 @@ def generate_audio(requests: list[GenerateRequest]) -> None:
 
         logger.info(f'Processing language: {language}')
         for request in tqdm(requests_list):
+            request: GenerateRequest
             if request.reference_speaker_path not in speakers:
                 logger.info(
                     f'Getting tone color embedding for {request.reference_speaker_path}'
@@ -72,20 +74,24 @@ def generate_audio(requests: list[GenerateRequest]) -> None:
                 )
 
             save_path = Path(request.save_path)
-            temp_audio_save_path = Path(tempfile.gettempdir()) / save_path.name
-            model.tts_to_file(
-                request.text,
-                speaker_id=0,
-                output_path=temp_audio_save_path,
-                speed=1,
-                sdp_ratio=0.5,
-                quiet=True,
-            )
+
+            if not request.pronunciation_path:
+                pronunciation_base_speaker_path = Path(tempfile.gettempdir()) / save_path.name
+                model.tts_to_file(
+                    request.text,
+                    speaker_id=0,
+                    output_path=pronunciation_base_speaker_path,
+                    speed=1,
+                    sdp_ratio=0.5,
+                    quiet=True,
+                )
+            else:
+                pronunciation_base_speaker_path = request.pronunciation_path
 
             tone_color_converter.convert(
-                audio_src_path=temp_audio_save_path,
+                audio_src_path=pronunciation_base_speaker_path,
                 src_se=speaker_se,
                 tgt_se=speakers[request.reference_speaker_path],
                 output_path=save_path,
-                tau=0.5,
+                tau=0.3,
             )
