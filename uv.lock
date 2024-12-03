@@ -2499,6 +2499,7 @@ dependencies = [
     { name = "cached-path" },
     { name = "cn2an" },
     { name = "eng-to-ipa" },
+    { name = "fastapi" },
     { name = "faster-whisper" },
     { name = "gradio" },
     { name = "inflect" },
@@ -2508,8 +2509,11 @@ dependencies = [
     { name = "melotts" },
     { name = "numpy" },
     { name = "onnxruntime" },
+    { name = "path-py" },
+    { name = "pydantic" },
     { name = "pydub" },
     { name = "pypinyin" },
+    { name = "termcolor" },
     { name = "unidecode" },
     { name = "wavmark" },
     { name = "whisper-timestamped" },
@@ -2526,6 +2530,7 @@ requires-dist = [
     { name = "cached-path", specifier = "==1.6.2" },
     { name = "cn2an", specifier = "==0.5.22" },
     { name = "eng-to-ipa", specifier = "==0.0.2" },
+    { name = "fastapi", specifier = "==0.115.5" },
     { name = "faster-whisper", specifier = "==0.9.0" },
     { name = "gradio", specifier = "==3.48.0" },
     { name = "inflect", specifier = "==7.0.0" },
@@ -2535,8 +2540,11 @@ requires-dist = [
     { name = "melotts", git = "https://github.com/myshell-ai/MeloTTS.git?rev=5b53848" },
     { name = "numpy", specifier = "==1.22.0" },
     { name = "onnxruntime", specifier = "==1.19.2" },
+    { name = "path-py", specifier = "==12.5.0" },
+    { name = "pydantic", specifier = "==2.10.2" },
     { name = "pydub", specifier = "==0.25.1" },
     { name = "pypinyin", specifier = "==0.50.0" },
+    { name = "termcolor", specifier = "==2.5.0" },
     { name = "unidecode", specifier = "==1.3.7" },
     { name = "wavmark", specifier = "==0.0.3" },
     { name = "whisper-timestamped", specifier = "==1.14.2" },
@@ -2721,6 +2729,27 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/66/94/68e2e17afaa9169cf6412ab0f28623903be73d1b32e208d9e8e541bb086d/parso-0.8.4.tar.gz", hash = "sha256:eb3a7b58240fb99099a345571deecc0f9540ea5f4dd2fe14c2a99d6b281ab92d", size = 400609 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c6/ac/dac4a63f978e4dcb3c6d3a78c4d8e0192a113d288502a1216950c41b1027/parso-0.8.4-py2.py3-none-any.whl", hash = "sha256:a418670a20291dacd2dddc80c377c5c3791378ee1e8d12bffc35420643d43f18", size = 103650 },
+]
+
+[[package]]
+name = "path"
+version = "17.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ff/a3/5dac44ce60ad6543578736a5729c5c2130cdac1c3117c61aad0583c2e3c6/path-17.0.0.tar.gz", hash = "sha256:e1540261d22df1416fb1b498b3b1ed5353a371a48fe197d66611bb01e7fab2d5", size = 49721 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/55/49/5ffc63f96029e4f899d6caee9db40c445ded1bf15cb60b32d77363c2c8de/path-17.0.0-py3-none-any.whl", hash = "sha256:b7309739c569e30110a34c6c812e582c09ff504c43e1232817410181838918ed", size = 24831 },
+]
+
+[[package]]
+name = "path-py"
+version = "12.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "path" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b6/e3/81be70016d58ade0f516191fa80152daba5453d0b07ce648d9daae86a188/path.py-12.5.0.tar.gz", hash = "sha256:8d885e8b2497aed005703d94e0fd97943401f035e42a136810308bff034529a8", size = 15713 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/04/130b7a538c25693c85c4dee7e25d126ebf5511b1eb7320e64906687b159e/path.py-12.5.0-py3-none-any.whl", hash = "sha256:a43e82eb2c344c3fd0b9d6352f6b856f40b8b7d3d65cc05978b42c3715668496", size = 2251 },
 ]
 
 [[package]]
@@ -3898,6 +3927,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/7a/13/e503968fefabd4c6b2650af21e110aa8466fe21432cd7c43a84577a89438/tensorboard_data_server-0.7.2-py3-none-any.whl", hash = "sha256:7e0610d205889588983836ec05dc098e80f97b7e7bbff7e994ebb78f578d0ddb", size = 2356 },
     { url = "https://files.pythonhosted.org/packages/b7/85/dabeaf902892922777492e1d253bb7e1264cadce3cea932f7ff599e53fea/tensorboard_data_server-0.7.2-py3-none-macosx_10_9_x86_64.whl", hash = "sha256:9fe5d24221b29625dbc7328b0436ca7fc1c23de4acf4d272f1180856e32f9f60", size = 4823598 },
     { url = "https://files.pythonhosted.org/packages/73/c6/825dab04195756cf8ff2e12698f22513b3db2f64925bdd41671bfb33aaa5/tensorboard_data_server-0.7.2-py3-none-manylinux_2_31_x86_64.whl", hash = "sha256:ef687163c24185ae9754ed5650eb5bc4d84ff257aabdc33f0cc6f74d8ba54530", size = 6590363 },
+]
+
+[[package]]
+name = "termcolor"
+version = "2.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/37/72/88311445fd44c455c7d553e61f95412cf89054308a1aa2434ab835075fc5/termcolor-2.5.0.tar.gz", hash = "sha256:998d8d27da6d48442e8e1f016119076b690d962507531df4890fcd2db2ef8a6f", size = 13057 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7f/be/df630c387a0a054815d60be6a97eb4e8f17385d5d6fe660e1c02750062b4/termcolor-2.5.0-py3-none-any.whl", hash = "sha256:37b17b5fc1e604945c2642c872a3764b5d547a48009871aea3edd3afa180afb8", size = 7755 },
 ]
 
 [[package]]

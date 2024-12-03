@@ -138,7 +138,7 @@ class ToneColorConverter(OpenVoiceBaseClass):
 
         return gs
 
-    def convert(self, audio_src_path, src_se, tgt_se, output_path=None, tau=0.3, message="default"):
+    def convert(self, audio_src_path, src_se, tgt_se, output_path=None, tau=0.3):
         hps = self.hps
         # load audio
         audio, sample_rate = librosa.load(audio_src_path, sr=hps.data.sampling_rate)

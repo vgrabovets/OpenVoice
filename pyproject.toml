@@ -22,7 +22,11 @@ dependencies = [
     'onnxruntime==1.19.2',
     "melotts",
     "botocore==1.34.88",
-    "cached_path==1.6.2"
+    "cached_path==1.6.2",
+    "fastapi==0.115.5",
+    "pydantic==2.10.2",
+    "termcolor==2.5.0",
+    "path-py==12.5.0",
 ]
 package = true
 [tool.uv]
