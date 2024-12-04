@@ -1,6 +1,6 @@
 import tempfile
 from collections import defaultdict
-from typing import Literal, Optional
+from typing import Literal
 
 import torch
 from melo.api import TTS
@@ -26,7 +26,6 @@ class GenerateRequest(BaseModel):
     save_path: str
     language: Literal['en', 'ja']
     text: str
-    pronunciation_path: Optional[str] = None
 
 
 def generate_audio(requests: list[GenerateRequest]) -> None:
@@ -75,18 +74,15 @@ def generate_audio(requests: list[GenerateRequest]) -> None:
 
             save_path = Path(request.save_path)
 
-            if not request.pronunciation_path:
-                pronunciation_base_speaker_path = Path(tempfile.gettempdir()) / save_path.name
-                model.tts_to_file(
-                    request.text,
-                    speaker_id=0,
-                    output_path=pronunciation_base_speaker_path,
-                    speed=1,
-                    sdp_ratio=0.5,
-                    quiet=True,
-                )
-            else:
-                pronunciation_base_speaker_path = request.pronunciation_path
+            pronunciation_base_speaker_path = Path(tempfile.gettempdir()) / save_path.name
+            model.tts_to_file(
+                request.text,
+                speaker_id=0,
+                output_path=pronunciation_base_speaker_path,
+                speed=1,
+                sdp_ratio=0.5,
+                quiet=True,
+            )
 
             tone_color_converter.convert(
                 audio_src_path=pronunciation_base_speaker_path,
