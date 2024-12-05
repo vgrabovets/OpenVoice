@@ -1,6 +1,6 @@
 import tempfile
 from collections import defaultdict
-from typing import Literal
+from typing import Literal, Optional
 
 import torch
 from melo.api import TTS
@@ -23,6 +23,7 @@ LANGUAGE_CODES = {
 class GenerateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     reference_speaker_path: str
+    speaker_embedding_path: Optional[str] = None
     save_path: str
     language: Literal['en', 'ja']
     text: str
@@ -63,17 +64,26 @@ def generate_audio(requests: list[GenerateRequest]) -> None:
         for request in tqdm(requests_list):
             request: GenerateRequest
             if request.reference_speaker_path not in speakers:
-                logger.info(
-                    f'Getting tone color embedding for {request.reference_speaker_path}'
-                )
-                speakers[request.reference_speaker_path], _ = se_extractor.get_se(
-                    request.reference_speaker_path,
-                    tone_color_converter,
-                    vad=False
-                )
+                if request.speaker_embedding_path:
+                    logger.info('Using cached embeddings')
+                    se_embedding = torch.load(request.speaker_embedding_path, map_location=device)
+                else:
+                    logger.info(
+                        f'Getting tone color embedding for {request.reference_speaker_path}'
+                    )
+                    se_embedding, _ = se_extractor.get_se(
+                        audio_path=request.reference_speaker_path,
+                        vc_model=tone_color_converter,
+                        target_dir=f'{tempfile.gettempdir()}/open_voice',
+                        vad=False
+                    )
+                    speaker_embedding_path = Path(request.reference_speaker_path).parent / 'se.pth'
+                    torch.save(se_embedding, speaker_embedding_path)
+                    logger.info(f'Speaker embedding saved to {speaker_embedding_path}')
+
+                speakers[request.reference_speaker_path] = se_embedding
 
             save_path = Path(request.save_path)
-
             pronunciation_base_speaker_path = Path(tempfile.gettempdir()) / save_path.name
             model.tts_to_file(
                 request.text,
