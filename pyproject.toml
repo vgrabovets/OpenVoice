@@ -36,4 +36,4 @@ dev-dependencies = [
 ]
 
 [tool.uv.sources]
-melotts = { git = "https://github.com/myshell-ai/MeloTTS.git", rev = "5b53848" }
+melotts = { git = "https://github.com/vgrabovets/MeloTTS.git", rev = "production" }
