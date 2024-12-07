@@ -1,8 +1,9 @@
 import tempfile
 from collections import defaultdict
-from typing import Literal, Optional
+from typing import Annotated, Literal, Optional
 
 import torch
+from annotated_types import MinLen
 from melo.api import TTS
 from path import Path
 from pydantic import BaseModel, ConfigDict
@@ -19,7 +20,7 @@ class GenerateRequest(BaseModel):
     speaker_embedding_path: Optional[str] = None
     save_path: str
     language: Literal['en', 'ja']
-    text: str
+    text: Annotated[str, MinLen(1)]
 
 
 class Generator:
