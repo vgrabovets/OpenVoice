@@ -21,6 +21,7 @@ class GenerateRequest(BaseModel):
     save_path: str
     language: Literal['en', 'ja']
     text: Annotated[str, MinLen(1)]
+    pronunciation_file: Optional[str] = None
 
 
 class Generator:
@@ -61,17 +62,22 @@ class Generator:
                     speaker_embedding_path=request.speaker_embedding_path
                 )
                 save_path = Path(request.save_path)
-                pronunciation_base_speaker_path = Path(
-                    tempfile.gettempdir()
-                ) / save_path.name
-                self._models[language].tts_to_file(
-                    request.text,
-                    speaker_id=0,
-                    output_path=pronunciation_base_speaker_path,
-                    speed=1,
-                    sdp_ratio=0.5,
-                    quiet=True,
-                )
+
+                if not request.pronunciation_file:
+                    pronunciation_base_speaker_path = Path(
+                        tempfile.gettempdir()
+                    ) / save_path.name
+                    self._models[language].tts_to_file(
+                        request.text,
+                        speaker_id=0,
+                        output_path=pronunciation_base_speaker_path,
+                        speed=1,
+                        sdp_ratio=0.5,
+                        quiet=True,
+                    )
+                else:
+                    logger.debug(f'Using {request.pronunciation_file} for {request.text}')
+                    pronunciation_base_speaker_path = request.pronunciation_file
 
                 self._tone_color_converter.convert(
                     audio_src_path=pronunciation_base_speaker_path,
