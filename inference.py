@@ -87,6 +87,8 @@ class Generator:
                     tau=0.3,
                 )
 
+        logger.info('Finished')
+
     def _load_model(self, language: str) -> None:
         if self._tone_color_converter is None:
             logger.info('Loading tone color converter')
