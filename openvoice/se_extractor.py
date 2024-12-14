@@ -1,9 +1,5 @@
 import os
 import glob
-import torch
-import hashlib
-import librosa
-import base64
 from glob import glob
 import numpy as np
 from pydub import AudioSegment
@@ -19,7 +15,7 @@ model = None
 def split_audio_whisper(audio_path, audio_name, target_dir='processed'):
     global model
     if model is None:
-        model = WhisperModel(model_size, device="cuda", compute_type="float16")
+        model = WhisperModel(model_size, device="cpu", compute_type="default")
     audio = AudioSegment.from_file(audio_path)
     max_len = len(audio)
 
@@ -127,7 +123,7 @@ def hash_numpy_array(audio_path):
     return base64_value.decode('utf-8')[:16].replace('/', '_^')
 
 def get_se(audio_path, vc_model, target_dir='processed', vad=True):
-    device = vc_model.device
+    # device = vc_model.device
     version = vc_model.version
     print("OpenVoice version:", version)
 
